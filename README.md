@@ -4,4 +4,4 @@
 
 # EXAMPLE RESULTS
 
-[image](./asset.ppm)
+![image](./asset.ppm)
