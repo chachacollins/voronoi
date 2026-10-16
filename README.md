@@ -4,4 +4,4 @@
 
 # EXAMPLE RESULTS
 
-![image](./asset.jpg)
+![image](https://raw.githubusercontent.com/chachacollins/voronoi/main/asset.jpg)
