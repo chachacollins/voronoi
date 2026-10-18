@@ -1,5 +1,4 @@
 module voronoi;
-import std::io;
 import std::math::random;
 
 struct Vector2
