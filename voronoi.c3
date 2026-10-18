@@ -1,4 +1,4 @@
-import ppm;
+module voronoi;
 import std::io;
 import std::math::random;
 
@@ -7,43 +7,6 @@ struct Vector2
     uint x;
     uint y;
 }
-
-const HEIGHT = 800;
-const WIDTH = 800;
-const SEEDS_COUNT = 30;
-
-uint[WIDTH][HEIGHT] image = {};
-
-const uint[*] VORONOI_COLORS = {
-    0xf2d5cfff,
-    0xeebebeff,
-    0xf4b8e4ff,
-    0xca9ee6ff,
-    0xe78284ff,
-    0xea999cff,
-    0xef9f76ff,
-    0xea6962ff,
-    0xa9b665ff,
-    0xd8a657ff,
-    0x7daea3ff,
-    0xd3869bff,
-    0x89b482ff,
-    0xd4be98ff,
-    0xe5c890ff,
-    0xa6d189ff,
-    0x81c8beff,
-    0x99d1dbff,
-    0x85c1dcff,
-    0x8caaeeff,
-    0xbabbf1ff,
-    0xc6d0f5ff,
-    0xb5bfe2ff,
-    0xa5adceff,
-    0x949cbbff,
-    0x838ba7ff,
-    0x737994ff,
-    0x62688ff,
-};
 
 fn uint sqr_dist(uint x, uint y, uint tx, uint ty)
 {
@@ -83,17 +46,17 @@ fn void draw_point(uint* image, uint width, uint height, uint cx, uint cy, uint 
     }
 }
 
-fn Vector2[SEEDS_COUNT] generate_seeds()
+fn Vector2[] generate_seeds(uint seeds_count, int max_width, int max_height)
 {
-    Vector2[SEEDS_COUNT] seeds;
+    Vector2[] seeds = mem::new_array(Vector2, seeds_count);
     foreach(&seed: seeds)
     {
-        *seed = (Vector2){.x = (uint)random::rand(WIDTH), .y = (uint)random::rand(HEIGHT)};
+        *seed = (Vector2){.x = (uint)random::rand(max_width), .y = (uint)random::rand(max_height)};
     }
     return seeds;
 }
 
-fn void color_voronoi(uint *image, uint width, uint height, Vector2[] seeds, uint[] colors)
+fn void generate_voronoi(uint *image, uint width, uint height, Vector2[] seeds, uint[] colors)
 {
     for(uint y = 0; y < height; y++)
     {
@@ -112,11 +75,3 @@ fn void color_voronoi(uint *image, uint width, uint height, Vector2[] seeds, uin
     }
 }
 
-fn void main()
-{
-    clear_image(&image, WIDTH, HEIGHT, COLOR_TSODING);
-    Vector2[SEEDS_COUNT] seeds = generate_seeds();
-    color_voronoi(&image, WIDTH, HEIGHT, &seeds, &VORONOI_COLORS);
-    foreach(seed: seeds) draw_point(&image, WIDTH, HEIGHT, seed.x, seed.y, 4, 0XFFFFFFFF);
-    ppm::write_image_to_ppm_file(&image, WIDTH, HEIGHT, "voronoi.ppm")!!;
-}
